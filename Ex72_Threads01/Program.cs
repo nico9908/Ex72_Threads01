@@ -9,34 +9,25 @@ namespace Ex72_Threads01
 {
     class Program
     {
+        public delegate void ThreadStart();
         static void Main(string[] args)
         {
             Thread t = new Thread(WriteHello);
-            Thread t2 = new Thread(WriteHello2);
-            Thread t3 = new Thread(WriteHello3);
-            t.Start();
-            t2.Start();
-            t3.Start();
+            Thread t2 = new Thread((Object msg) => 
+            { WriteHello(msg);
+            });
+            Thread t3 = new Thread(delegate(Object msg) 
+            { WriteHello(msg);
+            }); 
+            t.Start("Hello World!");
+            t2.Start("Hello Lambda!");
+            t3.Start("Hello delegate!");
         }
-        static void WriteHello()
+        static void WriteHello(Object msg)
         {
             for (int i = 0; i < 4; i++)
             {
-                Console.WriteLine("Hello World!");
-            }
-        }
-        static void WriteHello2()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                Console.WriteLine("Hello World!");
-            }
-        }
-        static void WriteHello3()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                Console.WriteLine("Hello World!");
+                Console.WriteLine(msg.ToString());
             }
             Console.ReadKey();
         }
